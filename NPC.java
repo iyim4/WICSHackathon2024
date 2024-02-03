@@ -7,10 +7,13 @@ public class NPC {
     private int manaPoints;
     private int healthPoints;
     private int lvl;
+    private boolean professor;
 
     /**
      * Constructor to initialize a new enemy
      */
+
+    // default
     private void NPC(){
         this.name = "Some loser";
         this.attackDamage = 1;
@@ -18,8 +21,11 @@ public class NPC {
         this.healthPoints = 1;
         this.lvl = 1;
         attacks.add(new Attack("Dropkick", 1, 0, "The NPC dropkicks you"));
+        this.professor = false;
+
     }
 
+    // creation
     public NPC(String n, int a, int m, int h){
         this.name = n;
         this.attackDamage = a;
@@ -40,8 +46,14 @@ public class NPC {
     }
     
     // reduce the mana bar ? 
-    private void manaUsage (int manaCost) {
+    private void manaUsage(int manaCost) {
         
-        manaPoints -= atk.manaCost();
+        manaPoints -= attacks.get(0).manaCost();
     }
+
+    
+    public boolean isProfessor(){
+        return professor;
+    }
+    
 }
