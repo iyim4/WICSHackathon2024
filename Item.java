@@ -1,24 +1,71 @@
-import java.util.ArrayList;
-public class Item {
-    String name;
-  
 
-    public Item(String name) {
+public class Item extends dataItem {
+    private String name;
+    private String description;
+    private int healingHarmingPoints;
+    private int numUses;
+    private int price;
+   
+    // if the item is enabled
+    private boolean inUse;
+
+    public Item(String name, String description, int price) {
         this.name = name;
-        
+        this.description = description;
+        this.price = price;
     }
 
-    public void special() {
+    public Item(String name, String description, int numTurnsAvailable, int price) {
+        this.name = name;
+        this.description = description;
+        this.numUses = numTurnsAvailable;
+        this.price = price;
+    }
+
+     public Item(String name, String description, int healingHarmingPoints, int numTurnsAvailable, int price) {
+        this.name = name;
+        this.description =description;
+        this.healingHarmingPoints = healingHarmingPoints;
+        this.numUses = numTurnsAvailable;
+        this.price = price;
+    }
+
+
+    public String getDescription(){
+        return description;
+    }
+
+    // heals the player
+    public int healingPoints(Player player){
+        int currHealthPoints = player.getHealthPoints(); 
+        currHealthPoints += healingHarmingPoints;
+        return currHealthPoints;
+
+    }
+
+   public void special() {
         System.out.println(name + " does nothing.");
         // update other objects if needed
     }
-
-    public void zombieTotem(){
-        System.out.println("Congratulations! Your suffering endures with the help of this" + name + ".Even if your health goes below 0, you will stay alive.");
+    public int getPrice(){
+        return price;
     }
-
-    public void genericItem(){
-
+    // decrements the number of uses for the item
+    public void itemInUse(){
+        if (numUses == 0){
+            inUse = false;
+        }
+        if(inUse){
+            numUses--;
+        }
     }
-    
+    /*public void hasZombieTotem(){
+        if(hasZombieTotem && Entity.getHealthPoints() < 0){
+            int maxHP = Entity.getMaxHealthPoints();
+            maxHP = Entity.getHealthPoints();
+            
+
+            
+        }
+    }*/
 }

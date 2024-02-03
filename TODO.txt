@@ -1,0 +1,4 @@
+a basic list of todo items
+
+read in csv to build arraylist
+https://stackabuse.com/reading-and-writing-csvs-in-java/

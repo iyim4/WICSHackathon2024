@@ -12,6 +12,14 @@ public class Attack {
         this.description = description;
     }
 
+    // constructor for file reader
+    public Attack(String[] args){
+        this.name = args[0];
+        this.damage = Integer.parseInt(args[1]);
+        this.manaCost = Integer.parseInt(args[2]);
+        this.description = args[3];
+    }
+
     public void printDescription() {
             System.out.println(description);
     }

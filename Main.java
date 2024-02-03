@@ -1,12 +1,13 @@
 
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
             // welcome message
         System.out.println("Welcome, young aspiring CS transfer student! You were thrown out by your parents," + 
         "but do not fear you shall go into debt and achieve your CS degree (hopefully). ! : ( )");
@@ -14,134 +15,191 @@ public class Main {
         // enemy creation (??)
         // later todo create a method that takes in datafile(.csv) and arraylist
         HashMap<String, NPC> enemies = new HashMap<>();
-        enemies.put("Student", new NPC("Student", 10, 10, 10));
-        enemies.put("TA", new NPC("TA", 20, 20, 20));
-        enemies.put("Professor", new NPC("Professor", 30, 30, 30));
-        enemies.put("Janitor", new NPC("Janitor", 30, 10, 5) );
+        Attack homework = new Attack("Homework", 6, 1, "The student's bane");
+        Attack slap = new Attack("Slap", 3, 0, "Who can't slap?");
+        enemies.put("Student", new NPC("Student", new ArrayList<Attack>(){{add(homework);}}, 10, 10, 10));
+        enemies.put("TA", new NPC("TA", new ArrayList<Attack>(){{add(homework);}}, 20, 20, 20));
+        enemies.put("Professor", new NPC("Professor", new ArrayList<Attack>(){{add(homework);}}, 30, 30, 30));
+        enemies.put("Janitor", new NPC("Janitor", new ArrayList<Attack>(){{add(homework);}}, 10, 10, 10) );
 
         // player input --> name selection
         System.out.println("\nWhat is your name? You poor innocent soul.");
         Scanner console = new Scanner(System.in);
         String name = console.nextLine();
-        Player player = new Player(name);
+        Player player = new Player(name, new ArrayList<Attack>(), 10, 10, 10);
         System.out.println("So your name is " + name + "?");
+        
+        // some setup
         ArrayList<Location> locations = new ArrayList<>();
-
-        System.out.println("You must venture ")
-        boolean running = true;
-        while (running) {
-            Random rand = new Random();
-
-            // player input
-            int option = Integer.parseInt(console.nextLine());
-
-            // print menu
-            // print options
-            System.out.println("\nWhat will you do?");
-            for (int i = 1; i <= locations.length(); i++)
-            System.out.println("\n\t1. Go into classroom");
-            System.out.println("\n\t2. Go to the art building");
-            System.out.println("\n\t3. Go to the GDC");
-            System.out.println("\n\t4. Go to the item shop.");
-            System.out.println();
+        Random rand = new Random();
+        //readFile(locations);
+        
+        System.out.println("You must venture "); //todo
+        int option = 0;
+        while (option != -1) {
+            // print menu (& stats?)
+            // print location options
+            System.out.println("\nWhat will you do?\n");
+            for (int i = 1; i <= locations.size(); i++) {
+                System.out.printf("\t%d. Go to the %s.\n", i, locations.get(i - 1).getName());
+            }
+            System.out.printf("\t%d. Go to the Item Shop.\n\n", locations.size());
             
-            // get input
+            // get player option
+            option = Integer.parseInt(console.nextLine());
+            while (option < -1 && option > locations.size()) {
+                System.out.println("Please enter a number between 0 and " + locations.size() + ", or -1 to quit.");
+                option = Integer.parseInt(console.nextLine());
+            }
+
             // update
-            switch (option) {
-            case 1:
-                // classroom
-                update(player, enemies.get(rand.nextInt(enemies.size())), 1);
-
-                break;
-            case 2:
-                // art
-
-                break;
-            case 3:
-                //gdc
-
-                break;
-            case 4:
-                //item shop
-
-                break;
-            default:
-                break;
+            if (option == locations.size()) {
+                // open shop dialogue <-- wait like item shop or??? Lorena
+                System.out.println("Welcome to the shop! Where one and all can buy to their " +
+                "hearts content, what would you like?");
+                // use itemShop class 
+            } else {
+                Location loc = locations.get(option);
+                loc.printDescription();
+                // get enemy from location (for weighted spawn distribution)
+                // call fightEnemy
+                fightEnemy(player, enemies.get("Janitor"));
             }
         }
-        System.out.println("You win ig that's cool for you");
+        if (option == -1) {
+            // quit message
+        } else {
+            System.out.println("You win ig that's cool for you");
+        }
         console.close();
     }
-    
 
-    // pre: validate option
-    private static void update(Player player, NPC enemy, int option) {
-        Attack attack = player.getAttack(option);
-        player.attack(attack, enemy);
+    private static void readFile() throws IOException{
+        String path = "./data/";
+        // parallel arrays: stores the file name and the number of arguments per line
+        String[] dataFiles = {
+            "AttackData.csv",
+            "NPCData.csv",
+            "ItemData.csv",
+            "LocationData.csv"
+        };
+
+        ArrayList<Attack> attacks = new ArrayList<>();
+        String filepath = path + "AttackData.csv";
+        try(BufferedReader sc = new BufferedReader(new FileReader(filepath))) {
+            String line = "";
+            while ((line = sc.readLine()) != null) {
+                attacks.add(new Attack(line.split(",")));
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Where is the file dude. YOU HAD ONE JOB");
+        }
+
+        ArrayList<NPC> NPCs = new ArrayList<>();
+        filepath = path + "NPCData.csv";
+        try(BufferedReader sc = new BufferedReader(new FileReader(filepath))) {
+            String line = "";
+            while ((line = sc.readLine()) != null) {
+                NPCs.add(new NPC(line.split(",")));
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Where is the file dude. YOU HAD ONE JOB");
+        }
+
+        ArrayList<Item> items = new ArrayList<>();
+        filepath = path + "AttackData.csv";
+        try(BufferedReader sc = new BufferedReader(new FileReader(filepath))) {
+            String line = "";
+            while ((line = sc.readLine()) != null) {
+                items.add(new dataItem(line.split(",")));
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Where is the file dude. YOU HAD ONE JOB");
+        }
+
+        // for (int i = 0; i < dataFiles.length; i++) {
+        //     String filePath = path + dataFiles[i];
+        //     int numDataPerLine = dataPerLine[i];
+        //     fillArrayList(scanner, filePath, numDataPerLine);
+        // }
+
+
+        // String file = "LocationData.csv";
+        // try(BufferedReader sc = new BufferedReader(new FileReader(file))) {
+        //     String line = "";
+        //     while ((line = sc.readLine()) != null) {
+        //         //locations.add(line.split(","));
+        //     }
+        // } catch (FileNotFoundException e) {
+        //     System.out.println("Where is the file dude. YOU HAD ONE JOB");
+        // }
+    } 
+
+    private static void fillArray(Scanner scanner){
+        //what are we filling the array with? - Lorena
     }
-
-    private static void fightEnemy(Player player, NPC enemy){
+    
+    private static void fightEnemy(Player player, NPC enemy) throws IOException{
+      Scanner console = new Scanner(System.in);
+      Random rand = new Random();
         int enemyHealth = enemy.getHealthPoints();
-        System.out.println("\tA " + enemy.getName() + " has appeared!\n");
+        System.out.println("\tA " + enemy.getName() + " has appeared!\n");        
         
         while(enemyHealth > 0){
-          System.out.println("\nYour HP: " + Player.getHealthPoints());
+          System.out.println("\nYour HP: " + player.getHealthPoints());
           System.out.println(enemy.getName() + "'s HP: " + enemyHealth);
           System.out.println("\nWhat will you do?");
           System.out.println("\n\t1. Attack");
           System.out.println("\n\t2. Use Item");
           System.out.println("\n\t3. Study");
         
-          String input = console.nextLine();
+          int option = Integer.parseInt(console.nextLine());
           System.out.println();
-          if (input.equals("1")){
-            //Attac
-            
-          } else if (input.equals("2")) {
-            //Item moment
-            
-          } else if (input.equals("3")) {
-            /
-            
-          } else if (input.equals("4")) {
-            if (food > 0){
-            System.out.println("You have healed yourself!\nYou are now fat and lazy but not tired or hungry!");
-              int damageTaken = rand.nextInt(enemyAttackDamage);
-              System.out.println("You have gained " + 50 + " health!");
-              food -= 1;
-              health += 50;
-            } else {
-              System.out.println("Sorry! You have no food");
-            }
-            int damageTaken = rand.nextInt(enemyAttackDamage);
-            System.out.println("You have taken " + damageTaken + " damage!");
-            
-            health -= damageTaken;
-            
-          } else if (input.equals("5")) {
-            System.out.println("You have used your spamming thunderbolt attack!");
-            int damageDealt = rand.nextInt(attackDamage);
-            int damageTaken = rand.nextInt(enemyAttackDamage);
-  
-            enemyHealth -= 2 * damageDealt;
-            health -= damageTaken;
-            System.out.println("You have dealt " + damageDealt + " damage!");
-            System.out.println("You have taken " + damageTaken + " damage!");
-            
-          }
-  
+          switch (option) {
+            case 1:
+                System.out.println("\nWhat attack will you use?");
+                for (int i = 1; i < 5; i++){
+                    System.out.println("\n\t1. " + player.getAttack(i).getName());
+                }
+                option = Integer.parseInt(console.nextLine());
+                player.attack(player, player.getAttack(option), enemy);
+                enemy.attack(enemy, enemy.getAttack(rand.nextInt(enemy.getAttacks().size())), player);
+                break;
+
+            case 2:
+                // Item
+                System.out.println("Welcome to the item shop. Can you even afford anything?");
+                ItemShop shop = new ItemShop();
+                break;
+            case 3:
+                //Leave
+                enemyHealth = -420;
+                break;
+            case 4:
+                //Just in case
+                //maybe for special drops? Wha
+
+                break;
+            default:
+                break;
+            } 
         }
-        System.out.println();
-        System.out.println("You have defeated " + thing + "!");
-        int tempMoney = Math.abs(rand.nextInt(10));
-        System.out.println("You have gained " + tempMoney + " dollars!");
-        System.out.println();
-        money += tempMoney;
-        Depression = false;
-        attackDamage = trueAttackDamage;
+        if (enemyHealth == -420){
+            System.out.println();
+            System.out.println("You have fled the " + enemy.getName() + "! L weak");
+        } else {
+            System.out.println();
+            System.out.println("You have defeated " + enemy.getName() + "!");
+            player.incMoney(5);
+            //System.out.println("You now have + " player.getMoney() + " monies!");
+            if (rand.nextInt(100) > 90){
+                System.out.println("You leveled up! Your new level is: " + player.getLVL());
+            }
+        }
+        console.close();
       }
+      
     }
     
-}
 
 

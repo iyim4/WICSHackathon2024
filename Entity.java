@@ -3,16 +3,14 @@ import java.util.ArrayList;
 abstract class Entity {
     private String name;
     private ArrayList<Attack> attacks;
-    private int attackDamage;
     private int manaPoints;
     private int healthPoints;
     private int lvl;
-    private int maxHealthPoints;
+    private static final int MAX_HEALTH_POINTS = 400;
 
-    public Entity(String name, ArrayList<Attack> attacks, int dam, int mana, int health, int lvl) {
+    public Entity(String name, ArrayList<Attack> attacks, int mana, int health, int lvl) {
         this.name = name;
         this.attacks = attacks;
-        attackDamage = dam;
         manaPoints = mana;
         healthPoints = health;
     }
@@ -21,8 +19,8 @@ abstract class Entity {
         return name;
     }
 
-    public int getDamage(){
-        return attackDamage * lvl;
+    public int getDamage(Attack attack){
+        return attack.getDamage() * lvl;
     }
 
     public int getManaPoints(){
@@ -32,23 +30,27 @@ abstract class Entity {
     public int getHealthPoints(){
         return healthPoints;
     }
-    public int getMaxHealthPoints(){
-        return maxHealthPoints;
+    public static int getMaxHealthPoints(){
+        return MAX_HEALTH_POINTS;
     }
 
     public int getLVL(){
         return lvl;
+    }
+
+    public void incLVL(){
+        lvl++;
+    }
+
+    public ArrayList<Attack> getAttacks(){
+        return attacks;
     }
     
     public Attack getAttack(int index) {
         return attacks.get(index);
     }
 
-    public void attack(Attack atk, NPC target) {
-        manaPoints -= atk.getManaCost();
-        target.takeDamage(atk);
-    }
-
+    
     public void attack(Entity attacker, Attack attack, Entity target) {
         attacker.manaPoints -= attack.getManaCost();
         target.healthPoints -= attack.getDamage();

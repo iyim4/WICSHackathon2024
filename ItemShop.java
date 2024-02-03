@@ -1,18 +1,29 @@
-import java.util.*;
+    import java.util.*;
+import java.io.*;
 
 public class ItemShop {
-    static ArrayList<Item> items; 
+    private static ArrayList<Object[]> items; 
 
-    public ItemShop(){
+    // constructor
+    public ItemShop() throws IOException{
         items = new ArrayList<>();
-        fillShop();
+        readFile();
     }
+    
 
-    private static void fillShop(){
-        items.add(new Item("Zombie Totem", "Even if your health goes below 0, you will stay alive."));
-        items.add(new Item("Dining Hall Napkin", "a crumpled brown napkin from one of the three dining halls. Consume it to stave off hunger.", 1,1));
-        items.add(new Item(""))
-    }
+    // looks at ItemData.csv, takes each line, and shoves it in the items arraylist
+    private static void readFile() throws IOException{
+        String file = "itemData.csv";
+        try(BufferedReader sc = new BufferedReader(new FileReader(file))) {
+            String line = "";
+            while ((line = sc.readLine()) != null) {
+                items.add(line.split(","));
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Where is the file dude. YOU HAD ONE JOB");
+        }
+    } 
+
     
  
 

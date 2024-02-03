@@ -1,0 +1,5 @@
+"npc name", "atk1", "atk2", ... [holds different number of args. can overlap.]
+        [atk1 is a string KEY used to access the actual attack objects. 
+        similarly, npc is also a string key.]
+        
+s
