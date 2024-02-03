@@ -1,11 +1,6 @@
 import java.util.*;
 
-public class NPC {
-    private String name;
-    private ArrayList<Attack> attacks;
-    private int attackDamage;
-    private int manaPoints;
-    private int healthPoints;
+public class NPC extends Entity {
     private int lvl;
     private boolean professor;
 
@@ -14,7 +9,7 @@ public class NPC {
      */
 
     // default
-    private void NPC(){
+    private NPC(){
         this.name = "Some loser";
         this.attackDamage = 1;
         this.manaPoints = 1;
@@ -33,11 +28,6 @@ public class NPC {
         this.healthPoints = h;
     }
 
-    // updates respective
-    private void takeDamage(Attack atk) {
-        healthPoints -= atk.getDamage();
-    }
-
     // depletes player's hp
     private void dealDamage(int health){
         Random rand = new Random();
@@ -48,7 +38,7 @@ public class NPC {
     // reduce the mana bar ? 
     private void manaUsage(int manaCost) {
         
-        manaPoints -= attacks.get(0).manaCost();
+        manaPoints -= attacks.get(0).getManaCost();
     }
 
     
@@ -56,4 +46,13 @@ public class NPC {
         return professor;
     }
     
+    public void attack(Attack atk, NPC target) {
+        manaPoints -= atk.getManaCost();
+        target.takeDamage(atk);
+    }
+
+    // updates perspective
+    public void takeDamage(Attack atk) {
+        healthPoints -= atk.getDamage();
+    }
 }

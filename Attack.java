@@ -24,7 +24,7 @@ public class Attack {
         return damage;
     }
 
-    public int manaCost() {
+    public int getManaCost() {
         return manaCost;
     }
 

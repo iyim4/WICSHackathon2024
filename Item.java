@@ -1,11 +1,11 @@
 import java.util.ArrayList;
 public class Item {
     String name;
-    private ArrayList<Item> allItems;
+  
 
     public Item(String name) {
         this.name = name;
-        allItems
+        
     }
 
     public void special() {
@@ -14,7 +14,7 @@ public class Item {
     }
 
     public void zombieTotem(){
-        System.out.println("Congratulations! Your suffering endures. Even if your health goes below 0, you will stay alive.");
+        System.out.println("Congratulations! Your suffering endures with the help of this" + name + ".Even if your health goes below 0, you will stay alive.");
     }
 
     public void genericItem(){

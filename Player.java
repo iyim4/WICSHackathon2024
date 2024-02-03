@@ -1,41 +1,39 @@
 import java.util.ArrayList;
 
-public class Player {
-    private String name;
-    private ArrayList<Attack> attacks;
-    private int attackDamage;
-    private int manaPoints;
-    private int healthPoints;
-    private int lvl;
+public class Player extends Entity {
+    
+    private ArrayList<Item> allItems;
 
     // Construtors
 
-    private void Player(String n){
-        this.name = n;
-        this.attackDamage = 1;
-        this.manaPoints = 10;
-        this.healthPoints = 10;
+    public Player(String n){
+        super(n, attacks, 10, 10, );
+        this.maxHealthPoints = 10;
         this.lvl = 10;
         attacks.add(new Attack("Punch", 5, 0, "You deck the enemy in the face"));
-    
     }
 
     // TODO create getters for everything
 
-    public int getAttackDamage(){
-        return attackDamage;
+    public int dealDamage(NPC enemy){
+        return attackDamage * lvl;
     }
 
-    public int getManaPoints(){
-        return manaPoints;
+    public Attack getAttack(int index) {
+        return attacks.get(index);
     }
 
-    public int getHealthPoints(){
-        return healthPoints;
+    public void attack(Attack atk, NPC target) {
+        manaPoints -= atk.getManaCost();
+        target.takeDamage(atk);
     }
 
-    public int getLVL(){
-        return lvl;
+    public void takeDamage(int damage) {
+        healthPoints -= damage;
+    }
+
+    public ArrayList<Item> getItems(){
+        return allItems;
     }
 
 }
