@@ -216,6 +216,7 @@ public class Main {
                 // attack
                 System.out.println("\nWhat attack will you use?");
                 ArrayList<String> playerAttackNames = player.getAttackNames();
+                playerAttackNames.add("Punch");
                 for (int i = 0; i < playerAttackNames.size(); i++) {
                     String atkName = playerAttackNames.get(i);
                     System.out.printf("\t%d. %s (%d MP)\n\t%s\n", i, atkName, 
@@ -260,7 +261,7 @@ public class Main {
                 System.out.println("You leveled up! Your new level is: " + player.getLVL());
             }
         }
-        console.close();
+        //console.close();
     }
 
 }

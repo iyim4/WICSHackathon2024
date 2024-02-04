@@ -16,6 +16,7 @@ abstract class Entity {
         this.manaPoints = mana;
         this.healthPoints = health;
         this.lvl = lvl;
+
     }
 
     /**
