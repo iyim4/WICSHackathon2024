@@ -1,8 +1,0 @@
-a basic list of todo items
-
-
-finish current items fields and add more items, 
--- also add price to the player. after each battle, should enemies drop both items and money?
--- if we still want money impleented
-
-implement boss summoning TAs
