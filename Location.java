@@ -5,8 +5,6 @@ import java.util.HashMap;
 public class Location {
     private String name;
     private String description;
-    // implement spawn rates later. maybe 
-    // use random: so 70% would be if rand < 0.7
     private ArrayList<String> localNPCs;
 
     public Location(String name){
@@ -15,8 +13,9 @@ public class Location {
 
     // Constructor for files. Must be in order: name, description
     public Location(String[] args) {
-        name = args[0];
-        description = args[1];
+        name = args[0]; 
+        description = args[1]; 
+        localNPCs = new ArrayList<>();
         for (int i = 2; i < args.length; i++) {
             localNPCs.add(args[i]);
         }

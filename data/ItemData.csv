@@ -1,4 +1,9 @@
-﻿Dining Hall Napkin,A crumpled brown napkin from one of the three dining halls.Consume it to stave off hunger.,1,1
-"Day-Old Chicken Fried Steak, A staple meal from the dining hall. It won't help you much., -1, 1
-Fire Extinguisher, Can be used to drive off other students, especially Biology majors.,1 
-"Zombie Totem","Even if your health goes below 0, you will stay alive!"
+﻿"dummy",-1,-1,-1,-1,"dummy"
+"Dining Hall Napkin",1,1,1,-1,"A crumpled brown napkin from one of the three dining halls. Consume it to stave off hunger."
+"Day-Old Chicken Fried Steak",-1,-1,1,-1,"A staple meal from the dining hall. It won't help you much."
+"Fire Extinguisher",1,1,1,-1,"Can be used to drive off other students, especially Biology majors."
+"Zombie Totem",1,1,1,-1,"Even if your health goes below 0, you will stay alive!"
+"UT ID",1,0,5,-1,"You'll be able to dodge an attack from your enemy because of your valid identification as a student!"
+"Mechanical Pencil",10,0,0,5,"All you ever need for your writing needs. It erases and not worry if the point breaks, you can just press it anew."
+"Notebook",6,0,10,10,"Who would've thought? Your notes actually came in handy."
+"Bag of Chips",5,10,0,5,"Who even eats healthy in college anyways."

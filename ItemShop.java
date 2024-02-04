@@ -1,18 +1,22 @@
 import java.util.Scanner;
+import java.util.Random;
 import java.util.TreeMap;
 
 public class ItemShop {
     TreeMap<String, Item> items = new TreeMap<>();
+    String[] introductions = {"Welcome to the shop! Where one and all can buy to their " +
+                "hearts content, what would you like?", "Welcome to the item shop. Can you even afford anything?",
+                "yeah, um, I guess you like, um, buy stuff?","Scram loser, unless you got some cash to pay for items, "
+                 + "there's a hefty price!"};
+    Random random = new Random();
+    //item.put()
+    //item.put(key, item)
 
     // functions to buy and sell items
 
-    //
     public void runShop(Player player) {
         Scanner console = new Scanner(System.in);
-        //todo choose which message to display, or maybe make a random?
-        System.out.println("Welcome to the shop! Where one and all can buy to their " +
-                "hearts content, what would you like?");
-        System.out.println("Welcome to the item shop. Can you even afford anything?");
+        System.out.println(introductions[random.nextInt(4)]);
         // System.out.println("");
         // print options
         int option = -1;
@@ -28,8 +32,6 @@ public class ItemShop {
                 // place validation in here?
             }
         }
-        
-        // todo maybe sassy shop message? "why did you even come here?"
         console.close();
 
     }
@@ -50,7 +52,7 @@ public class ItemShop {
             if (option != 0) {
                 Item chosenItem = getItemAtPosition(option - 1);
                 if (chosenItem.getPrice() > player.getMoney()) {
-                    System.out.println("You don't have enough money."); // insert funny dialogue?
+                    System.out.println("You don't have enough money. Imagine being BROKE HAHAHAHAH"); // insert funny dialogue?
                 } else {
                     player.updateMoney(-1 * chosenItem.getPrice());
                     player.addItem(chosenItem);

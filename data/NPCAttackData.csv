@@ -1,5 +1,7 @@
-"npc name", "atk1", "atk2", ... [holds different number of args. can overlap.]
-        [atk1 is a string KEY used to access the actual attack objects. 
-        similarly, npc is also a string key.]
-        
-s
+"dummy","dummy"
+"Mike Scott","Test",
+"Carol Ramsey","Personal Design Hours","Summon [minion?TA?]"
+"Art Major","punch"
+"Biology Major","punch"
+"Chemistry Major","punch"
+"Computer Science Major","punch"

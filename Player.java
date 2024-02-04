@@ -40,6 +40,14 @@ public class Player extends Entity {
         Item chosenItem = inventory.get(0);
         chosenItem.use(this); 
         // who to use it on?
+        System.out.println("Who will you use it on?");
+        System.out.println("1. Yourself\n2. The enemy");
+        String option = console.nextLine();
+        if (option.equals("1")){
+            chosenItem.use(this);
+        } else if (option.equals("2")){
+            chosenItem.use(target);
+        }
         // if (option == 1) chosenItem.use(target); //use on self
         // if (option == 1) chosenItem.use(this); // use on enemy
         // exit

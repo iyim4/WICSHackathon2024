@@ -6,9 +6,6 @@ public class Item {
     private int manaPoints;
     private int numUses;
     private int price;
-    
-    // if the item is enabled
-    private boolean inUse; // remove? since it will be in the player's "inventory"
 
     public Item(String name, String description, int numUses, int healthPoints, int manaPoints, int price) {
         this.name = name;

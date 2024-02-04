@@ -7,6 +7,7 @@ abstract class Entity {
     private int manaPoints;
     private int healthPoints;
     private int lvl;
+    private ArrayList<String> dropNames;
     private static final int MAX_HEALTH_POINTS = 400; // to be used with zombie totem (item)
 
     public Entity(String name, ArrayList<String> attackNames, int mana, int health, int lvl) {
@@ -79,5 +80,13 @@ abstract class Entity {
     public void itemModifyHealthMana(int health, int mana) {
         this.healthPoints += health;
         this.manaPoints += mana;
+    }
+
+    public String printStats(Entity target){
+        String stats = "Name: " + target.getName() + 
+        "\nHealth Points: " + Integer.toString(target.getHealthPoints()) +
+        "\nLVL: " + Integer.toString(target.getLVL()) +
+        "\nMana Points: " + Integer.toString(target.getManaPoints());
+        return stats;
     }
 }

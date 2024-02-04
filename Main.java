@@ -4,25 +4,18 @@ import java.util.Scanner;
 import java.util.Random;
 import java.util.ArrayList;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+// import java.util.StringBuilder;
+import java.io.InputStreamReader;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         // welcome message
         System.out.println("Welcome, young aspiring CS transfer student! You were thrown out by your parents," + 
                 "but do not fear you shall go into debt and achieve your CS degree (hopefully). ! : ( )");
-
-        // enemy creation (??)
-        // later todo create a method that takes in datafile(.csv) and arraylist
-        // HashMap<String, NPC> enemies = new HashMap<>();
-        // Attack homework = new Attack("Homework", 6, 1, "The student's bane");
-        // Attack slap = new Attack("Slap", 3, 0, "Who can't slap?");
-        // enemies.put("Student", new NPC("Student", new ArrayList<Attack>(){{add(slap);}}, 10, 10, 10));
-        // enemies.put("TA", new NPC("TA", new ArrayList<Attack>(){{add(homework);}}, 20, 20, 20));
-        // enemies.put("Professor", new NPC("Professor", new ArrayList<Attack>(){{add(homework);}}, 30, 30, 30));
-        // enemies.put("Janitor", new NPC("Janitor", new ArrayList<Attack>(){{add(slap);}}, 10, 10, 10) );
 
         // player input --> name selection
         System.out.println("\nWhat is your name? You poor innocent soul.");
@@ -40,12 +33,12 @@ public class Main {
         ItemShop shop = new ItemShop();
         readData(allAttacks, allNPCs, allItems, allLocations);
 
-        System.out.println("You must venture ..."); //todo
-        int option = 0;
-        while (option != -1) {
-            // print menu (& stats?)
+        System.out.println("You must venture outside!"); //todo
+        int option = -1;
+        while (option != 0) {
             // print location options
             System.out.println("\nWhat will you do?\n");
+            System.out.printf("\t0. Quit\n");
             for (int i = 1; i <= allLocations.size(); i++) {
                 System.out.printf("\t%d. Go to the %s.\n", i, allLocations.get(i - 1).getName());
             }
@@ -61,7 +54,6 @@ public class Main {
 
             // update
             if (option == allLocations.size()) {
-                // open shop dialogue <-- wait like item shop or??? Lorena //solved, can delete this line now
                 shop.runShop(player);
             } else {
                 Location loc = allLocations.get(option);
@@ -69,14 +61,15 @@ public class Main {
                 // get enemy from location (for weighted spawn distribution)
                 // call fightEnemy
                 fightEnemy(player, loc.getRandomLocalNPC(allNPCs), allAttacks, console, rand);
+            // }
             }
-        }
-        if (option == -1) {
-            // quit message
+        if (option == 0) {
+            System.out.println("Quitting...");
         } else {
             System.out.println("You win ig that's cool for you");
         }
         console.close();
+        }
     }
 
     // read in data from all files and stores it in allAttacks, allNPCs, allItems, and allLocations
@@ -85,13 +78,14 @@ public class Main {
         String path = "./data/";
 
         // attacks
-        allAttacks = new HashMap<>();
+        // allAttacks = new HashMap<>();
         String filepath = path + "AttackData.csv";
         try(BufferedReader sc = new BufferedReader(new FileReader(filepath))) {
             String line = "";
             String[] list;
             while ((line = sc.readLine()) != null) {
                 list = line.split(",");
+                //System.out.println("creating attack " + toStringArray(list));
                 allAttacks.put(list[0], new Attack(list));
             }
         } catch (FileNotFoundException e) {
@@ -99,7 +93,7 @@ public class Main {
         }
 
         // NPCs
-        allNPCs = new HashMap<>();
+        // allNPCs = new HashMap<>();
         filepath = path + "NPCData.csv";
         try(BufferedReader sc = new BufferedReader(new FileReader(filepath))) {
             String line = "";
@@ -111,21 +105,29 @@ public class Main {
         } catch (FileNotFoundException e) {
             System.out.println("Where is the file dude. YOU HAD ONE JOB");
         }
+        
+        // //debugging, delete later
+        // System.out.println("now npcs are:");
+        // for (String a : allNPCs.keySet()) {
+        //     System.out.print(a + ", ");
+        
+        // System.out.println("DEBUGGING: value of \"Mike Scott\" " + allNPCs.get("Mike Scott"));
+        // System.out.println("DEBUGGING: value of \"Carol Ramsey\" " + allNPCs.get("Carol Ramsey"));
+        // System.out.println();
 
-        //debugging, delete later
-        for (String a : allNPCs.keySet()) {
-            System.out.print(a + ", ");
-        }
-        System.out.println();
-
-        // output: "?? Major", ï»¿"Mike Scott", "Art Major", "Carol Ramsey", "Business Major", "? Major",
-        //~~~~~~~~~~~~~~~~~~~~ ^
-        // what is this gibberish?? let's solve tomorrow
-
+        // for (NPC n : allNPCs) {
+        //     System.out.println(NPC.getName() + ", ");
+        // }
 
         // NPCs' attacks
         filepath = path + "NPCAttackData.csv";
-        try(BufferedReader sc = new BufferedReader(new FileReader(filepath))) {
+        try(BufferedReader sc = new BufferedReader(new InputStreamReader(new FileInputStream("yourfile"), "UTF-8"))) {
+            sc.mark(1);
+            if (sc.read() != 0xFEFF){
+                sc.reset();
+            }
+            //BufferedReader sc = new BufferedReader(new FileReader(filepath)) OLD
+            //BufferedReader sc = new BufferedReader(new InputStreamReader(new FileInputStream("yourfile"), "UTF-8")) NEW
             String line = "";
             String[] list;
             while ((line = sc.readLine()) != null) {
@@ -134,15 +136,23 @@ public class Main {
                 for (int i = 1; i < list.length; i++) {
                     tempAttacks.add(list[i]);
                 }
-                System.out.println("placing " + list[0]);
-                allNPCs.get(list[0]).setAttacks(tempAttacks);
+               
+                NPC temp = allNPCs.get(list[0]);
+                // System.out.println("DEBUG: list[0]" + list[0]);
+                //  System.out.println(list[0] + " " + temp);
+                if (temp != null) {
+                    temp.setAttacks(tempAttacks);
+                } else {
+                    // delete later
+                    System.out.println("failed to place " + toStringArray(list));
+                }
             }
         } catch (FileNotFoundException e) {
             System.out.println("Where is the file dude. YOU HAD ONE JOB");
         }
 
         // items
-        allItems = new HashMap<>();
+        // allItems = new HashMap<>();
         filepath = path + "ItemData.csv";
         try(BufferedReader sc = new BufferedReader(new FileReader(filepath))) {
             String line = "";
@@ -156,24 +166,38 @@ public class Main {
         }
 
         // locations
-        allLocations = new ArrayList<>();
+        // allLocations = new ArrayList<>();
         filepath = path + "LocationData.csv";
         try(BufferedReader sc = new BufferedReader(new FileReader(filepath))) {
             String line = "";
             String[] list;
             while ((line = sc.readLine()) != null) {
                 list = line.split(",");
-                allLocations.add(new Location(list));
+                Location l = new Location(list);
+                // System.out.println("loc " + toStringArray(list));
+                // System.out.println(l.getName());
+                allLocations.add(l);
+                // System.out.println("DEBUG: allLocations newly added: " + allLocations.get(allLocations.size()-1).getName());
             }
         } catch (FileNotFoundException e) {
             System.out.println("Where is the file dude. YOU HAD ONE JOB");
         }
+        allLocations.remove(0);
+    }
+
+    private static String toStringArray(String[] a) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < a.length; i++) {
+            sb.append(a[i]).append(", ");
+        }
+        return sb.toString();
     }
 
     private static void fightEnemy(Player player, NPC enemy, HashMap<String, Attack> allAttacks,
             Scanner console, Random rand) throws IOException {
         int enemyHealth = enemy.getHealthPoints();
-        System.out.println("\tA " + enemy.getName() + " has appeared!\n");        
+        System.out.println("\tA " + enemy.getName() + " has appeared!\n");  
+        //System.out.println(player.printStats(enemy));      
 
         while(enemyHealth > 0) {
             //todo create private helpermethod that prints stats
@@ -182,7 +206,7 @@ public class Main {
             System.out.println("\nWhat will you do?");
             System.out.println("\n\t1. Attack");
             System.out.println("\n\t2. Use Item");
-            System.out.println("\n\t3. Study"); 
+            System.out.println("\n\t3. Study (Flee)"); 
 
             int option = Integer.parseInt(console.nextLine());
             // validate
@@ -205,7 +229,7 @@ public class Main {
 
             case 2:
                 // use item
-                // player.useItem(enemy, console);
+                player.chooseItem(enemy, console);
                 break;
             case 3:
                 //Leave
@@ -227,7 +251,10 @@ public class Main {
         } else {
             System.out.println();
             System.out.println("You have defeated " + enemy.getName() + "!");
-            player.updateMoney(5);
+            if (enemy.isProfessor()){
+                player.updateMoney(40);
+            }
+            player.updateMoney(10);
             //System.out.println("You now have + " player.getMoney() + " monies!");
             if (rand.nextInt(100) > 90){
                 System.out.println("You leveled up! Your new level is: " + player.getLVL());
