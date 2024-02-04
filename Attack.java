@@ -12,7 +12,7 @@ public class Attack {
         this.description = description;
     }
 
-    // constructor for file reader
+    // constructor for file reader. must be in order: name, damage, manaCost, description
     public Attack(String[] args){
         this.name = args[0];
         this.damage = Integer.parseInt(args[1]);

@@ -1,4 +1,31 @@
 a basic list of todo items
 
-read in csv to build arraylist
-https://stackabuse.com/reading-and-writing-csvs-in-java/
+VERY IMPORTANT: NO SPACES BETWEEN COMMAS IN CSV FILES!!!
+this causes the buffer to throw error: "this, is good","no space"
+
+finish current items fields and add more items, 
+-- also add price to the player. after each battle, should enemies drop both items and money?
+-- if we still want money impleented
+
+npc and/or attack - implement boss summoning TAs and mecahnics
+
+entity - method that prints out an entity's basic stats (for after every round)
+
+everywhere - add data validation for scanner in. i.e. make a while loop prompting for user input
+rather than throwing an exception to terminate the program
+
+npcData - add money drops and item drops (just name of item) to everything. maybe  drops ~10?
+
+everywhere - decide to call user input scanner variable console or keyboard or input. 
+        be consistent, too many names get confusing
+
+main - finish text prompts
+
+comment methods! brief explanation of what it does, and any preconditions if needed
+implement preconditions: validate console input for switch statements/ menu choices
+preferably use a while loop to prompt user for input again
+use ctrl + f and ctrl + shift + f to find these key words: validate, todo
+
+delete first row of most data files (currently category headers. we dont want that as an actual data point!)
+
+note: warning! when getting a new npc, make sure to COPY it from allNPCs, not modify allNPCs
